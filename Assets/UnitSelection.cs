@@ -72,6 +72,19 @@ public class UnitSelection : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isSelecting = false;
+
+            float maxX = Mathf.Max(mousePosition1.x, Input.mousePosition.x);
+            float minX = Mathf.Min(mousePosition1.x, Input.mousePosition.x);
+            float maxY = Mathf.Max(mousePosition1.y, Input.mousePosition.y);
+            float minY = Mathf.Min(mousePosition1.y, Input.mousePosition.y);
+            Rect selection = Rect.MinMaxRect(minX, minY, maxX, maxY);
+
+            foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                bool selected = selection.Contains(Camera.main.WorldToScreenPoint(player.transform.position));
+                Debug.Log(selected);
+                player.GetComponent<Bot>().selected = selected;
+            }
         }
     }
 
