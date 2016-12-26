@@ -10,8 +10,11 @@ public class Base : MonoBehaviour {
 	void Start () {
 		for (int i = 0; i < 5; ++i) {
 			float angle = Random.value * Mathf.PI * 2;
+			Rigidbody bot = (Rigidbody) Instantiate(Bot, transform.position, Quaternion.identity);
+
 			Vector3 position = new Vector3 (Mathf.Cos (angle), Mathf.Sin (angle)) * 5f;
-			Rigidbody bot = (Rigidbody) Instantiate(Bot, transform.position + position, Quaternion.identity);
+			bot.GetComponent<Bot> ().target = transform.position + position;
+
 			bot.gameObject.SetActive(true);
 		}
 	}
