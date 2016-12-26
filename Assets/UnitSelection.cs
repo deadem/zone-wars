@@ -37,15 +37,15 @@ public class UnitSelection : MonoBehaviour
             Utils.DrawScreenRect(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), color);
         }
 
-        public static Rect GetScreenRect(Vector3 screenPosition1, Vector3 screenPosition2)
+        public static Rect GetScreenRect(Vector2 screenPosition1, Vector2 screenPosition2)
         {
             // Move origin from bottom left to top left
             screenPosition1.y = Screen.height - screenPosition1.y;
             screenPosition2.y = Screen.height - screenPosition2.y;
 
             // Calculate corners
-            var topLeft = Vector3.Min(screenPosition1, screenPosition2);
-            var bottomRight = Vector3.Max(screenPosition1, screenPosition2);
+            var topLeft = Vector2.Min(screenPosition1, screenPosition2);
+            var bottomRight = Vector2.Max(screenPosition1, screenPosition2);
 
             // Create Rect
             return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
@@ -53,7 +53,7 @@ public class UnitSelection : MonoBehaviour
     }
 
     bool isSelecting = false;
-    Vector3 mousePosition1;
+    Vector2 mousePosition1;
 
     void Start()
     {
@@ -79,10 +79,24 @@ public class UnitSelection : MonoBehaviour
             float minY = Mathf.Min(mousePosition1.y, Input.mousePosition.y);
             Rect selection = Rect.MinMaxRect(minX, minY, maxX, maxY);
 
+            bool moveCommand = false;
+            Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if (selection.width < 3 && selection.height < 3)
+            {
+                moveCommand = true;
+            }
+
             foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
             {
-                bool selected = selection.Contains(Camera.main.WorldToScreenPoint(player.transform.position));
-                Debug.Log(selected);
+                bool selected = !moveCommand && selection.Contains(Camera.main.WorldToScreenPoint(player.transform.position));
+
+                if (moveCommand && player.GetComponent<Bot>().selected)
+                {
+                    float angle = Random.value * Mathf.PI * 2;
+                    player.GetComponent<Bot>().target = target + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * Random.value;
+                }
+
                 player.GetComponent<Bot>().selected = selected;
             }
         }

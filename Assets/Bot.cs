@@ -15,7 +15,7 @@ public class Bot : MonoBehaviour {
 		const float speed = 1.0f;
 
 		float step = speed * Time.deltaTime;
-		transform.position = Vector3.MoveTowards (transform.position, target, step);
+		transform.position = Vector2.MoveTowards(transform.position, target, step);
 
         GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
     }
