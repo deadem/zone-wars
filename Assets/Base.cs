@@ -8,15 +8,17 @@ public class Base : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		for (int i = 0; i < 5; ++i) {
-			float angle = Random.value * Mathf.PI * 2;
-			Rigidbody bot = (Rigidbody) Instantiate(Bot, transform.position, Quaternion.identity);
+		InvokeRepeating ("CloneBot", 1f, 1f);
+	}
 
-			Vector3 position = new Vector3 (Mathf.Cos (angle), Mathf.Sin (angle)) * 5f;
-			bot.GetComponent<Bot> ().target = transform.position + position;
+	void CloneBot() {
+		float angle = Random.value * Mathf.PI * 2;
+		Rigidbody bot = (Rigidbody) Instantiate(Bot, transform.position, Quaternion.identity);
 
-			bot.gameObject.SetActive(true);
-		}
+		Vector3 position = new Vector3 (Mathf.Cos (angle), Mathf.Sin (angle)) * 1.5f * (Random.value + 1f);
+		bot.GetComponent<Bot> ().target = transform.position + position;
+
+		bot.gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
