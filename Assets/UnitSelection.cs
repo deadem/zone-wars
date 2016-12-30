@@ -89,6 +89,9 @@ public class UnitSelection : MonoBehaviour
 
             foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
             {
+				if (!player.GetComponent<Bot> ()) {
+					continue;
+				}
                 bool selected = !moveCommand && selection.Contains(Camera.main.WorldToScreenPoint(player.transform.position));
 
                 if (moveCommand && player.GetComponent<Bot>().selected)
