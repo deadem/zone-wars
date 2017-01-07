@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Base : MonoBehaviour {
 	public Rigidbody Bot;
+	public double power = 100;
 
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
 		{ "Player", Color.yellow },
@@ -46,4 +47,26 @@ public class Base : MonoBehaviour {
 	void Update() {
 		GetComponent<SpriteRenderer>().color = getColor();
 	}
+
+	void OnGUI()
+	{
+		float barDisplay = 5;
+		Texture2D progressBarEmpty = new Texture2D(10, 10);
+		Texture2D progressBarFull = new Texture2D(10, 10);
+
+		Vector2 size = new Vector2(60, 5);
+		Vector3 position = Camera.main.WorldToScreenPoint (transform.position);
+
+		Rect pos = new Rect ();
+
+		pos.x = position.x - size.x / 2;
+		pos.y = position.y + 20;
+		pos.width = size.x;
+		pos.height = size.y;
+
+		GUI.color = getColor ();
+		GUI.DrawTexture (pos, progressBarEmpty);
+		GUI.color = Color.white;
+	} 
+
 }
