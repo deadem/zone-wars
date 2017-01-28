@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class Base : MonoBehaviour {
-	public Rigidbody Bot;
+	public Bot botPrefab;
 	public double power = 100;
 
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
@@ -32,7 +32,7 @@ public class Base : MonoBehaviour {
 	void CloneBot() {
 		if (getColor() != Color.gray) {
 			float angle = Random.value * Mathf.PI * 2;
-			Rigidbody bot = (Rigidbody)Instantiate (Bot, transform.position, Quaternion.identity);
+			Bot bot = (Bot)Instantiate (botPrefab, transform.position, Quaternion.identity);
 			bot.GetComponent<SpriteRenderer> ().color = getColor ();
 			bot.gameObject.tag = tag;
 
