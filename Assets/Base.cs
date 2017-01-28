@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class Base : MonoBehaviour {
 	public Bot botPrefab;
-	public double power = 100;
+	private float maxpower = 20;
+	public float power = 20;
 
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
 		{ "Player", Color.yellow },
@@ -29,7 +30,16 @@ public class Base : MonoBehaviour {
 		InvokeRepeating ("CloneBot", 1f, 1f);
 	}
 
+	public void Shot(string player) {
+		--power;
+		if (power <= 0) {
+			power += maxpower;
+			tag = player;
+		}
+	}
+
 	void CloneBot() {
+		Debug.Log (getColor ());
 		if (getColor() != Color.gray) {
 			float angle = Random.value * Mathf.PI * 2;
 			Bot bot = (Bot)Instantiate (botPrefab, transform.position, Quaternion.identity);
@@ -61,7 +71,7 @@ public class Base : MonoBehaviour {
 
 		pos.x = position.x - size.x / 2;
 		pos.y = position.y + 20;
-		pos.width = size.x;
+		pos.width = Mathf.FloorToInt(power / maxpower * size.x);
 		pos.height = size.y;
 
 		GUI.color = getColor ();

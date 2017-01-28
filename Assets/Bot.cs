@@ -6,6 +6,11 @@ public class Bot : MonoBehaviour {
 	public Vector3 target = new Vector3();
     public bool selected = false;
 
+	public void Shot(string player)
+	{
+		Destroy(gameObject);
+	}
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -20,11 +25,22 @@ public class Bot : MonoBehaviour {
         GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
     }
 
-	void OnTriggerStay2D(Collider2D collider) {
+	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.tag != tag) {
-			Debug.Log (collider.tag);
+			//Debug.Log (collider.tag);
 			AudioSource audio = GetComponent<AudioSource>();
 			audio.Play();
+
+			LineRenderer shot = GetComponent<LineRenderer>();
+			shot.SetPosition(0, transform.position);
+			shot.SetPosition(1, collider.transform.position);
+
+			Color color = GetComponent<SpriteRenderer> ().color;
+			shot.startColor = color;
+			shot.endColor = color;
+
+			collider.GetComponent<Base>().Shot (tag);
+			Destroy(gameObject, 0.1f);
 		}
 	}
 }

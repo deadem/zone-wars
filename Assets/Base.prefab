@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botPrefab: {fileID: 0}
-  power: 100
+  power: 20
 --- !u!212 &212981816937438770
 SpriteRenderer:
   m_ObjectHideFlags: 1
