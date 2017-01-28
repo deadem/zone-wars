@@ -19,4 +19,10 @@ public class Bot : MonoBehaviour {
 
         GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
     }
+
+	void OnTriggerStay2D(Collider2D collider) {
+		if (collider.tag != tag) {
+			Debug.Log (collider.tag);
+		}
+	}
 }
