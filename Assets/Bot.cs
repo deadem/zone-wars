@@ -23,6 +23,8 @@ public class Bot : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D collider) {
 		if (collider.tag != tag) {
 			Debug.Log (collider.tag);
+			AudioSource audio = GetComponent<AudioSource>();
+			audio.Play();
 		}
 	}
 }
