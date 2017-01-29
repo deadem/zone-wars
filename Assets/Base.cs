@@ -39,7 +39,6 @@ public class Base : MonoBehaviour {
 	}
 
 	void CloneBot() {
-		Debug.Log (getColor ());
 		if (getColor() != Color.gray) {
 			float angle = Random.value * Mathf.PI * 2;
 			Bot bot = (Bot)Instantiate (botPrefab, transform.position, Quaternion.identity);
@@ -70,7 +69,7 @@ public class Base : MonoBehaviour {
 		Rect pos = new Rect ();
 
 		pos.x = position.x - size.x / 2;
-		pos.y = position.y + 20;
+		pos.y = Screen.height - position.y + 20;
 		pos.width = Mathf.FloorToInt(power / maxpower * size.x);
 		pos.height = size.y;
 

@@ -5,10 +5,12 @@ using UnityEngine;
 public class Bot : MonoBehaviour {
 	public Vector3 target = new Vector3();
     public bool selected = false;
+	public bool isActive = true;
 
 	public void Shot(string player)
 	{
-		Destroy(gameObject);
+		isActive = false;
+		Destroy(gameObject, 0.1f);
 	}
 
 	// Use this for initialization
@@ -17,6 +19,9 @@ public class Bot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isActive) {
+			return;
+		}
 		const float speed = 1.0f;
 
 		float step = speed * Time.deltaTime;
@@ -26,8 +31,29 @@ public class Bot : MonoBehaviour {
     }
 
 	void OnTriggerEnter2D(Collider2D collider) {
+		if (!isActive) {
+			return;
+		}
 		if (collider.tag != tag) {
-			//Debug.Log (collider.tag);
+			Base enemyBase = collider.GetComponent<Base>();
+			if (enemyBase) {
+				enemyBase.Shot (tag);
+
+				isActive = false;
+				Destroy(gameObject, 0.1f);
+			} else {
+				Bot bot = collider.GetComponent<Bot> ();
+				if (bot) {
+					if (!bot.isActive) {
+						return;
+					}
+					bot.Shot (tag);
+
+					isActive = false;
+					Destroy(gameObject, 0.1f);
+				}
+			}
+
 			AudioSource audio = GetComponent<AudioSource>();
 			audio.Play();
 
@@ -38,9 +64,6 @@ public class Bot : MonoBehaviour {
 			Color color = GetComponent<SpriteRenderer> ().color;
 			shot.startColor = color;
 			shot.endColor = color;
-
-			collider.GetComponent<Base>().Shot (tag);
-			Destroy(gameObject, 0.1f);
 		}
 	}
 }
