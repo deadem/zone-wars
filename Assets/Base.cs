@@ -113,7 +113,7 @@ public class Base : MonoBehaviour
 
 			Debug.Log("base strength: " + baseStrength);
 
-			if (baseStrength <= teamSize || teamSize >= attackTeamSize * 1.2) {
+			if (baseStrength <= teamSize || teamSize >= attackTeamSize * 1.7) {
 				float diff = (element.transform.position - transform.position).sqrMagnitude;
 				if (diff <= distance) {
 					target = element;
