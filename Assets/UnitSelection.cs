@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class UnitSelection : MonoBehaviour
 {
+	private const float buttonDelayConst = 0.3f;
+	private float buttonDelay = buttonDelayConst;
+	private int buttonCount = 0;
+
     public static class Utils
     {
         static Texture2D _whiteTexture;
@@ -66,7 +70,25 @@ public class UnitSelection : MonoBehaviour
         {
             isSelecting = true;
             mousePosition1 = Input.mousePosition;
+
+			if (buttonDelay > 0 && buttonCount >= 1) {
+				foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player")) {
+					if (!player.GetComponent<Bot> ()) {
+						continue;
+					}
+					player.GetComponent<Bot>().selected = true;
+				}
+			} else {
+				buttonDelay = buttonDelayConst;
+				++buttonCount;
+			}
         }
+
+		if (buttonDelay > 0) {
+			buttonDelay -= Time.deltaTime;
+		} else {
+			buttonCount = 0;
+		}
 
         // If we let go of the left mouse button, end selection
         if (Input.GetMouseButtonUp(0))

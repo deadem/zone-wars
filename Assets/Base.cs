@@ -7,6 +7,7 @@ public class Base : MonoBehaviour {
 	public Bot botPrefab;
 	private float maxpower = 20;
 	public float power = 20;
+	private const float baseUnitRadius = 8f;
 
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
 		{ "Player", Color.yellow },
@@ -57,9 +58,8 @@ public class Base : MonoBehaviour {
 			// calc nearest Bots
 			GameObject[] army = GameObject.FindGameObjectsWithTag(tag);
 			List<GameObject> team = new List<GameObject>();
-			float maxDistance = 7;
 			foreach (GameObject bot in army) {
-				if ((bot.transform.position - transform.position).sqrMagnitude <= maxDistance) {
+				if ((bot.transform.position - transform.position).sqrMagnitude <= baseUnitRadius) {
 					team.Add(bot);
 				}
 			}
