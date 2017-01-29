@@ -12,6 +12,7 @@ public class Base : MonoBehaviour {
 		{ "Player", Color.yellow },
 		{ "EnemyGreen", Color.green },
 		{ "EnemyRed", Color.red },
+		{ "Neutral", Color.gray },
 		{ "", Color.gray }
 	};
 
@@ -39,7 +40,8 @@ public class Base : MonoBehaviour {
 	}
 
 	void CloneBot() {
-		if (getColor() != Color.gray) {
+		Color color = getColor();
+		if (color != Color.gray) {
 			float angle = Random.value * Mathf.PI * 2;
 			Bot bot = (Bot)Instantiate (botPrefab, transform.position, Quaternion.identity);
 			bot.GetComponent<SpriteRenderer> ().color = getColor ();
@@ -50,7 +52,48 @@ public class Base : MonoBehaviour {
 
 			bot.gameObject.SetActive (true);
 		}
+
+		if (color != Color.yellow) {
+			// calc nearest Bots
+			GameObject[] army = GameObject.FindGameObjectsWithTag(tag);
+			List<GameObject> team = new List<GameObject>();
+			float maxDistance = 7;
+			foreach (GameObject bot in army) {
+				if ((bot.transform.position - transform.position).sqrMagnitude <= maxDistance) {
+					team.Add(bot);
+				}
+			}
+
+			if (team.Count >= 25) {
+				Debug.Log("ready");
+
+				GameObject[] neutral = GameObject.FindGameObjectsWithTag("Neutral");
+
+				GameObject nearest = null;
+				float distance = Mathf.Infinity;
+
+				foreach (GameObject element in neutral) {
+					float diff = (element.transform.position - transform.position).sqrMagnitude;
+					if (diff <= distance) {
+						nearest = element;
+						distance = diff;
+					}
+				}
+
+				if (nearest) {
+					foreach (GameObject obj in team) {
+						Bot bot = obj.GetComponent<Bot> ();
+						if (bot) {
+							bot.target = nearest.transform.position;
+						}
+					}
+				}
+			}
+		}
 	}
+
+
+
 	
 	// Update is called once per frame
 	void Update() {
