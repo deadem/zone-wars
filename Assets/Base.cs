@@ -94,11 +94,12 @@ public class Base : MonoBehaviour
 		}
 
 		foreach (GameObject element in candidates) {
-			if (!element.GetComponent<Base>()) {
+			Base baseElement = element.GetComponent<Base>();
+			if (!baseElement) {
 				continue;
 			}
 
-			int baseStrength = 0;
+			float baseStrength = baseElement.power;
 
 			foreach (KeyValuePair<string, Color> color in colors) {
 				if (color.Key != tag && color.Key != "") {
@@ -113,7 +114,7 @@ public class Base : MonoBehaviour
 
 			Debug.Log("base strength: " + baseStrength);
 
-			if (baseStrength + attackTeamSize <= teamSize / 1.2f || teamSize >= attackTeamSize * 2f) {
+			if (baseStrength <= teamSize * 0.8f || teamSize >= attackTeamSize * 2f) {
 				float diff = (element.transform.position - transform.position).sqrMagnitude;
 				if (diff <= distance) {
 					target = element;
