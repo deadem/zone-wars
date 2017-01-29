@@ -9,7 +9,7 @@ public class Base : MonoBehaviour
 	private float maxpower = 20;
 	public float power = 20;
 	private const float baseUnitRadius = 10f;
-	private const int attackTeamSize = 25;
+	private const int attackTeamSize = 20;
 
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
 		{ "Player", Color.yellow },
@@ -113,7 +113,7 @@ public class Base : MonoBehaviour
 
 			Debug.Log("base strength: " + baseStrength);
 
-			if (baseStrength <= teamSize || teamSize >= attackTeamSize * 1.7) {
+			if (baseStrength + attackTeamSize <= teamSize / 1.2f || teamSize >= attackTeamSize * 2f) {
 				float diff = (element.transform.position - transform.position).sqrMagnitude;
 				if (diff <= distance) {
 					target = element;
@@ -155,7 +155,7 @@ public class Base : MonoBehaviour
 		Rect pos = new Rect();
 
 		pos.x = position.x - size.x / 2;
-		pos.y = Screen.height - position.y + 20;
+		pos.y = Screen.height - position.y + 30;
 		pos.width = Mathf.FloorToInt(power / maxpower * size.x);
 		pos.height = size.y;
 

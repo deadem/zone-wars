@@ -287,7 +287,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -13
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -321,6 +321,11 @@ Prefab:
       propertyPath: m_TagString
       value: EnemyRed
       objectReference: {fileID: 0}
+    - target: {fileID: 114285629008994158, guid: 5a031c0982c0e5f45bb87f21d10ea91f,
+        type: 2}
+      propertyPath: botPrefab
+      value: 
+      objectReference: {fileID: 2084073256}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
   m_IsPrefabParent: 0
@@ -337,7 +342,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -384,7 +389,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4335918623688720, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -416,7 +421,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1233513119147628, guid: 5a031c0982c0e5f45bb87f21d10ea91f, type: 2}
       propertyPath: m_TagString
-      value: Untagged
+      value: Neutral
       objectReference: {fileID: 0}
     - target: {fileID: 114285629008994158, guid: 5a031c0982c0e5f45bb87f21d10ea91f,
         type: 2}
