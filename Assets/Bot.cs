@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bot : MonoBehaviour {
+public class Bot : MonoBehaviour
+{
 	public Vector3 target = new Vector3();
-    public bool selected = false;
+	public bool selected = false;
 	public bool isActive = true;
 
 	public void Shot(string player)
@@ -13,12 +14,20 @@ public class Bot : MonoBehaviour {
 		Destroy(gameObject, 0.1f);
 	}
 
+	public void Attack(Vector2 coordinates)
+	{
+		float angle = Random.value * Mathf.PI * 2;
+		target = coordinates + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * Random.value;
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		if (!isActive) {
 			return;
 		}
@@ -27,27 +36,28 @@ public class Bot : MonoBehaviour {
 		float step = speed * Time.deltaTime;
 		transform.position = Vector2.MoveTowards(transform.position, target, step);
 
-        GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
-    }
+		GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
+	}
 
-	void OnTriggerEnter2D(Collider2D collider) {
+	void OnTriggerEnter2D(Collider2D collider)
+	{
 		if (!isActive) {
 			return;
 		}
 		if (collider.tag != tag) {
 			Base enemyBase = collider.GetComponent<Base>();
 			if (enemyBase) {
-				enemyBase.Shot (tag);
+				enemyBase.Shot(tag);
 
 				isActive = false;
 				Destroy(gameObject, 0.1f);
 			} else {
-				Bot bot = collider.GetComponent<Bot> ();
+				Bot bot = collider.GetComponent<Bot>();
 				if (bot) {
 					if (!bot.isActive) {
 						return;
 					}
-					bot.Shot (tag);
+					bot.Shot(tag);
 
 					isActive = false;
 					Destroy(gameObject, 0.1f);
@@ -61,7 +71,7 @@ public class Bot : MonoBehaviour {
 			shot.SetPosition(0, transform.position);
 			shot.SetPosition(1, collider.transform.position);
 
-			Color color = GetComponent<SpriteRenderer> ().color;
+			Color color = GetComponent<SpriteRenderer>().color;
 			shot.startColor = color;
 			shot.endColor = color;
 		}
