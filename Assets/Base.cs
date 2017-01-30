@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-	public Bot botPrefab;
+	public GameObject botPrefab;
 	private float maxpower = 20;
 	public float power = 20;
 	private const float baseUnitRadius = 10f;
@@ -50,7 +50,7 @@ public class Base : MonoBehaviour
 		Color color = getColor();
 		if (color != Color.gray) {
 			float angle = Random.value * Mathf.PI * 2;
-			Bot bot = (Bot)Instantiate(botPrefab, transform.position, Quaternion.identity);
+			Bot bot = (Bot)Instantiate(botPrefab.GetComponent<Bot>(), transform.position, Quaternion.identity);
 			bot.GetComponent<SpriteRenderer>().color = getColor();
 			bot.gameObject.tag = tag;
 

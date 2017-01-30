@@ -64,8 +64,7 @@ public class Bot : MonoBehaviour
 				}
 			}
 
-			AudioSource audio = GetComponent<AudioSource>();
-			audio.Play();
+            SoundManager.instance.Shot();
 
 			LineRenderer shot = GetComponent<LineRenderer>();
 			shot.SetPosition(0, transform.position);
