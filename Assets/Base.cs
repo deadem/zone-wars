@@ -11,6 +11,9 @@ public class Base : MonoBehaviour
 	private const float baseUnitRadius = 10f;
 	private const int attackTeamSize = 20;
 
+	private Texture2D progressBarEmpty;
+	private Vector2 progressBarSize;
+
 	private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color> {
 		{ "Player", Color.yellow },
 		{ "EnemyGreen", Color.green },
@@ -33,6 +36,9 @@ public class Base : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		progressBarEmpty = new Texture2D(10, 10);
+		progressBarSize = new Vector2(60, 5);
+
 		InvokeRepeating("CloneBot", 1f, 1f);
 	}
 
@@ -71,7 +77,7 @@ public class Base : MonoBehaviour
 			}
 
 			if (team.Count >= attackTeamSize) {
-				Debug.Log("ready: " + team.Count);
+				//Debug.Log("ready: " + team.Count);
 				GameObject nearest = findTarget(team.Count);
 
 				if (nearest) {
@@ -112,7 +118,7 @@ public class Base : MonoBehaviour
 				}
 			}
 
-			Debug.Log("base strength: " + baseStrength);
+			//Debug.Log("base strength: " + baseStrength);
 
 			if (baseStrength <= teamSize * 0.8f || teamSize >= attackTeamSize * 2f) {
 				float diff = (element.transform.position - transform.position).sqrMagnitude;
@@ -147,18 +153,14 @@ public class Base : MonoBehaviour
 
 	void OnGUI()
 	{
-		Texture2D progressBarEmpty = new Texture2D(10, 10);
-		// Texture2D progressBarFull = new Texture2D(10, 10);
-
-		Vector2 size = new Vector2(60, 5);
 		Vector3 position = Camera.main.WorldToScreenPoint(transform.position);
 
 		Rect pos = new Rect();
 
-		pos.x = position.x - size.x / 2;
+		pos.x = position.x - progressBarSize.x / 2;
 		pos.y = Screen.height - position.y + 30;
-		pos.width = Mathf.FloorToInt(power / maxpower * size.x);
-		pos.height = size.y;
+		pos.width = Mathf.FloorToInt(power / maxpower * progressBarSize.x);
+		pos.height = progressBarSize.y;
 
 		GUI.color = getColor();
 		GUI.DrawTexture(pos, progressBarEmpty);
