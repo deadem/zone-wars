@@ -42,14 +42,8 @@ public class Base : MonoBehaviour
 		InvokeRepeating("CloneBot", 1f, 1f);
 	}
 
-	public void Shot(string player)
+	private void CheckPlayerBases()
 	{
-		--power;
-		if (power <= 0) {
-			power += maxpower;
-			tag = player;
-		}
-
 		bool playerBases = false;
 		foreach (GameObject game in GameObject.FindGameObjectsWithTag("Player")) {
 			if (game.GetComponent<Base>()) {
@@ -58,9 +52,33 @@ public class Base : MonoBehaviour
 			}
 		}
 
-		if (true || !playerBases) {
+		if (!playerBases) {
 			// no player bases. GameOver
-			GameManager.instance.messages.GameOver();
+			GameManager.instance.GameOver();
+		}
+	}
+
+	private void CheckEnemyBases()
+	{
+		Base[] bases = GameObject.FindObjectsOfType<Base>();
+		foreach(Base element in bases)
+		{
+			if (element.tag != "Player") {
+				return;
+			}
+		}
+		GameManager.instance.YouWin();
+	}
+
+	public void Shot(string player)
+	{
+		--power;
+		if (power <= 0) {
+			power += maxpower;
+			tag = player;
+
+			CheckPlayerBases();
+			CheckEnemyBases();
 		}
 	}
 

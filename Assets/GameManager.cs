@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
     private static GameObject audioPrefab;
     public GameObject audioPrefabSource;
     public AudioClip shotSound;
-	public Messages messages;
 
     public static GameManager instance = null;
 
@@ -16,8 +15,6 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             audioPrefab = audioPrefabSource;
-			messages = new Messages();
-			messages.init();
         }
         else if (instance != this)
         {
@@ -34,4 +31,27 @@ public class GameManager : MonoBehaviour
         Audio a = go.GetComponent<Audio>();
         a.PlaySoundOnce(shotSound);
     }
+
+	public void GameOver()
+	{
+		Debug.Log(transform.Find("Canvas"));
+		transform.Find("Canvas").transform.Find("GameOver").gameObject.SetActive(true);
+	}
+
+	public void YouWin()
+	{
+		Debug.Log(transform.Find("Canvas"));
+		transform.Find("Canvas").transform.Find("YouWin").gameObject.SetActive(true);
+	}
+
+	public void Restart()
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void NextLevel()
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
+	}
+
 }
