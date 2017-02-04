@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private static GameObject audioPrefab;
     public GameObject audioPrefabSource;
     public AudioClip shotSound;
+	public Messages messages;
 
-    public static SoundManager instance = null;
+    public static GameManager instance = null;
 
     void Awake()
     {
@@ -15,6 +16,8 @@ public class SoundManager : MonoBehaviour
         {
             instance = this;
             audioPrefab = audioPrefabSource;
+			messages = new Messages();
+			messages.init();
         }
         else if (instance != this)
         {

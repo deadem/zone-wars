@@ -3,3 +3,5 @@ Library/ShaderCache/
 Library/metadata/
 Temp/UnityLockfile
 Temp/
+*.sln
+*.userprefs

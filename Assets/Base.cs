@@ -49,6 +49,19 @@ public class Base : MonoBehaviour
 			power += maxpower;
 			tag = player;
 		}
+
+		bool playerBases = false;
+		foreach (GameObject game in GameObject.FindGameObjectsWithTag("Player")) {
+			if (game.GetComponent<Base>()) {
+				playerBases = true;
+				break;
+			}
+		}
+
+		if (true || !playerBases) {
+			// no player bases. GameOver
+			GameManager.instance.messages.GameOver();
+		}
 	}
 
 	void CloneBot()

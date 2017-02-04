@@ -7,6 +7,7 @@ public class Bot : MonoBehaviour
 	public Vector3 target = new Vector3();
 	public bool selected = false;
 	public bool isActive = true;
+	public float speed = 1.0f;
 
 	public void Shot(string player)
 	{
@@ -28,13 +29,13 @@ public class Bot : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!isActive) {
-			return;
-		}
-		const float speed = 1.0f;
 
 		float step = speed * Time.deltaTime;
 		transform.position = Vector2.MoveTowards(transform.position, target, step);
+
+		if (!isActive) {
+			return;
+		}
 
 		GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
 	}
@@ -64,7 +65,7 @@ public class Bot : MonoBehaviour
 				}
 			}
 
-            SoundManager.instance.Shot();
+            GameManager.instance.Shot();
 
 			LineRenderer shot = GetComponent<LineRenderer>();
 			shot.SetPosition(0, transform.position);
