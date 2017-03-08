@@ -6,8 +6,8 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
 	public GameObject botPrefab;
-	private float maxpower = 20;
-	public float power = 20;
+	public const float maxpower = 40;
+	public float power = maxpower;
 	private const float baseUnitRadius = 10f;
 	private const int attackTeamSize = 20;
 
@@ -74,7 +74,7 @@ public class Base : MonoBehaviour
 	{
 		--power;
 		if (power <= 0) {
-			power += maxpower;
+			power = maxpower;
 			tag = player;
 
 			CheckPlayerBases();
