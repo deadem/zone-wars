@@ -11,6 +11,7 @@ public class Bot : MonoBehaviour
 	public float energy = 2;
 	public List<Collider2D> enemies = new List<Collider2D>();
 	public float shotTime = 0;
+	LineRenderer shot;
 
 	public void Shot(string player)
 	{
@@ -30,6 +31,13 @@ public class Bot : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		shot = GetComponent<LineRenderer>();
+
+		Color color = GetComponent<SpriteRenderer>().color;
+		shot.startColor = color;
+		shot.endColor = color;
+
+		shotTime = Random.value;
 	}
 	
 	// Update is called once per frame
@@ -42,44 +50,32 @@ public class Bot : MonoBehaviour
 
 		shotTime += Time.deltaTime;
 		if (shotTime > 0.05) {
-			GetComponent<LineRenderer>().numPositions = 0;
+		  shot.numPositions = 0;
 		}
+			
+		if (shotTime > 1) {
+			enemies.RemoveAll(x => !x);
+			Collider2D lastMob = enemies.Find(x => x && x.tag != tag);
 
-		Collider2D lastMob = enemies.Find(x => x && x.tag != tag);
+			if (lastMob) {
+				shotTime = 0;
 
-		if (shotTime > 1 && lastMob) {
-			shotTime = 0;
-
-			Base enemyBase = lastMob.GetComponent<Base>();
-			if (enemyBase) {
-				enemyBase.Shot(tag);
-
-				//isActive = false;
-				//Destroy(gameObject, 0.1f);
-			} else {
-				Bot bot = lastMob.GetComponent<Bot>();
-				if (bot) {
-
-					if (!bot.isActive) {
-						//return;
+				Base enemyBase = lastMob.GetComponent<Base>();
+				if (enemyBase) {
+					enemyBase.Shot(tag);
+				} else {
+					Bot bot = lastMob.GetComponent<Bot>();
+					if (bot) {
+						bot.Shot(tag);
 					}
-					bot.Shot(tag);
-
-					//isActive = false;
-					//Destroy(gameObject, 0.1f);
 				}
+
+				GameManager.instance.Shot();
+
+				shot.numPositions = 2;
+				shot.SetPosition(0, transform.position);
+				shot.SetPosition(1, lastMob.transform.position);
 			}
-
-			GameManager.instance.Shot();
-
-			LineRenderer shot = GetComponent<LineRenderer>();
-			shot.numPositions = 2;
-			shot.SetPosition(0, transform.position);
-			shot.SetPosition(1, lastMob.transform.position);
-
-			Color color = GetComponent<SpriteRenderer>().color;
-			shot.startColor = color;
-			shot.endColor = color;
 		}
 	}
 		
@@ -93,8 +89,6 @@ public class Bot : MonoBehaviour
 
 	void OnTriggerExit2D(Collider2D collider)
 	{
-		if (collider.tag != tag) {
-			enemies.Remove(collider);
-		}
+		enemies.Remove(collider);
 	}
 }
