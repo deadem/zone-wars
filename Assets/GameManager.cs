@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     private static GameObject audioPrefab;
     public GameObject audioPrefabSource;
     public AudioClip shotSound;
+
+	private List<ManagedUpdateBehavor> managedObjects = new List<ManagedUpdateBehavor>();
 
     public static GameManager instance = null;
 
@@ -15,6 +18,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             audioPrefab = audioPrefabSource;
+			Application.targetFrameRate = 60;
         }
         else if (instance != this)
         {
@@ -52,6 +56,24 @@ public class GameManager : MonoBehaviour
 	public void NextLevel()
 	{
 		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
+	}
+
+	void Update()
+	{
+		int count = managedObjects.Count;
+		for (int i = 0; i < count; ++i) {
+			managedObjects[i].ManagedUpdate();
+		}
+	}
+
+	public void AddManagedUpdate(ManagedUpdateBehavor obj)
+	{
+		managedObjects.Add(obj);
+	}
+
+	public void RemoveManagedUpdate(ManagedUpdateBehavor obj)
+	{
+		managedObjects.Remove(obj);
 	}
 
 }

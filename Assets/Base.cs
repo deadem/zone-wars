@@ -10,6 +10,7 @@ public class Base : MonoBehaviour
 	public float power = maxpower;
 	private const float baseUnitRadius = 10f;
 	private const int attackTeamSize = 20;
+	private const float spawnSpeed = 1f;
 
 	private Texture2D progressBarEmpty;
 	private Vector2 progressBarSize;
@@ -39,7 +40,7 @@ public class Base : MonoBehaviour
 		progressBarEmpty = new Texture2D(10, 10);
 		progressBarSize = new Vector2(60, 5);
 
-		InvokeRepeating("CloneBot", 1f, 1f);
+		InvokeRepeating("CloneBot", spawnSpeed, spawnSpeed);
 	}
 
 	private void CheckPlayerBases()

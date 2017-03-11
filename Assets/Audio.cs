@@ -10,7 +10,6 @@ public class Audio : MonoBehaviour
 
     IEnumerator PlaySoundCoroutine(AudioClip audioClip)
     {
-        Debug.Log(GetComponent<AudioSource>());
         GetComponent<AudioSource>().PlayOneShot(audioClip);
         yield return new WaitForSeconds(audioClip.length);
         Destroy(gameObject);

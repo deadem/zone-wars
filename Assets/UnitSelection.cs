@@ -73,7 +73,7 @@ public class UnitSelection : MonoBehaviour
 					if (!player.GetComponent<Bot>()) {
 						continue;
 					}
-					player.GetComponent<Bot>().selected = true;
+					player.GetComponent<Bot>().Select(true);
 				}
 			} else {
 				buttonDelay = buttonDelayConst;
@@ -110,11 +110,11 @@ public class UnitSelection : MonoBehaviour
 				}
 				bool selected = !moveCommand && selection.Contains(Camera.main.WorldToScreenPoint(player.transform.position));
 
-				if (moveCommand && player.GetComponent<Bot>().selected) {
+				if (moveCommand && player.GetComponent<Bot>().IsSelected()) {
 					player.GetComponent<Bot>().Attack(target);
 				}
 
-				player.GetComponent<Bot>().selected = selected;
+				player.GetComponent<Bot>().Select(selected);
 			}
 		}
 	}

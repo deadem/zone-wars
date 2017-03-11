@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bot : MonoBehaviour
+public class Bot : ManagedUpdateBehavor
 {
 	public Vector3 target = new Vector3();
-	public bool selected = false;
 	public bool isActive = true;
 	public float speed = 1.0f;
 	public float energy = 2;
-	public List<Collider2D> enemies = new List<Collider2D>();
+	public List<Collider> enemies = new List<Collider>();
+	private Transform transformation;
 	public float shotTime = 0;
 	LineRenderer shot;
+	private GameObject selectionObject;
+
+	public bool IsSelected()
+	{
+		return selectionObject && selectionObject.activeSelf;
+	}
+
+	public void Select(bool selected)
+	{
+		if (selectionObject) {
+			selectionObject.SetActive(selected);
+		}
+	}
 
 	public void Shot(string player)
 	{
@@ -29,7 +42,7 @@ public class Bot : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start()
+	public override void Start()
 	{
 		shot = GetComponent<LineRenderer>();
 
@@ -38,27 +51,33 @@ public class Bot : MonoBehaviour
 		shot.endColor = color;
 
 		shotTime = Random.value;
+		transformation = transform;
+		selectionObject = GetComponentInChildren<Selection>(true).gameObject;
+
+		gameObject.layer = LayerMask.NameToLayer(CompareTag("Player") ? "Player" : "Enemy");
+
+		base.Start();
 	}
 	
-	// Update is called once per frame
-	void Update()
+	public override void ManagedUpdate()
 	{
-		float step = speed * Time.deltaTime;
-		transform.position = Vector2.MoveTowards(transform.position, target, step);
-
-		GetComponentInChildren<Selection>(true).gameObject.SetActive(selected);
-
+		transformation.position = Vector3.MoveTowards(transformation.position, target, speed * Time.deltaTime);
 		shotTime += Time.deltaTime;
-		if (shotTime > 0.05) {
-		  shot.numPositions = 0;
+
+		base.ManagedUpdate();
+	}
+		
+	void FixedUpdate()
+	{
+		if (shotTime > 0.05 && shot.numPositions != 0) {
+			shot.numPositions = 0;
 		}
-			
-		if (shotTime > 1) {
+		if (shotTime > 1 && enemies.Count != 0) {
 			enemies.RemoveAll(x => !x);
-			Collider2D lastMob = enemies.Find(x => x && x.tag != tag);
+			Collider lastMob = enemies.Find(x => x && !x.CompareTag(tag));
 
 			if (lastMob) {
-				shotTime = 0;
+				shotTime = Random.value;
 
 				Base enemyBase = lastMob.GetComponent<Base>();
 				if (enemyBase) {
@@ -73,21 +92,21 @@ public class Bot : MonoBehaviour
 				GameManager.instance.Shot();
 
 				shot.numPositions = 2;
-				shot.SetPosition(0, transform.position);
+				shot.SetPosition(0, transformation.position);
 				shot.SetPosition(1, lastMob.transform.position);
 			}
 		}
 	}
 		
 
-	void OnTriggerEnter2D(Collider2D collider)
+	void OnTriggerEnter(Collider collider)
 	{
-		if (collider.tag != tag) {
+		if (!collider.CompareTag(tag)) {
 			enemies.Add(collider);
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D collider)
+	void OnTriggerExit(Collider collider)
 	{
 		enemies.Remove(collider);
 	}

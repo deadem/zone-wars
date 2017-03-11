@@ -50,6 +50,7 @@
      <Compile Include="Assets\Base.cs" />
      <Compile Include="Assets\Bot.cs" />
      <Compile Include="Assets\GameManager.cs" />
+     <Compile Include="Assets\ManagedUpdateBehavior.cs" />
      <Compile Include="Assets\Messages.cs" />
      <Compile Include="Assets\Selection.cs" />
      <Compile Include="Assets\UnitSelection.cs" />
