@@ -69,8 +69,8 @@ public class Bot : ManagedUpdateBehavor
 		
 	void FixedUpdate()
 	{
-		if (shotTime > 0.05 && shot.numPositions != 0) {
-			shot.numPositions = 0;
+		if (shotTime > 0.05 && shot.positionCount != 0) {
+			shot.positionCount = 0;
 		}
 		if (shotTime > 1 && enemies.Count != 0) {
 			enemies.RemoveAll(x => !x);
@@ -91,7 +91,7 @@ public class Bot : ManagedUpdateBehavor
 
 				GameManager.instance.Shot();
 
-				shot.numPositions = 2;
+				shot.positionCount = 2;
 				shot.SetPosition(0, transformation.position);
 				shot.SetPosition(1, lastMob.transform.position);
 			}
